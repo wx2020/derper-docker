@@ -1,15 +1,15 @@
 # Derper
 
-[![docker workflow](https://github.com/YOUR_NAME/derper-docker/actions/workflows/docker-image.yml/badge.svg)](https://hub.docker.com/r/YOUR_NAME/derper)
-[![docker pulls](https://img.shields.io/docker/pulls/YOUR_NAME/derper.svg?color=brightgreen)](https://hub.docker.com/r/YOUR_NAME/derper)
-[![platfrom](https://img.shields.io/badge/platform-amd64%20%7C%20arm64-brightgreen)](https://hub.docker.com/r/YOUR_NAME/derper/tags)
+[![docker workflow](https://github.com/wx2020/derper-docker/actions/workflows/docker-image.yml/badge.svg)](https://github.com/wx2020/derper-docker/actions/workflows/docker-image.yml)
+[![ghcr package](https://img.shields.io/badge/ghcr-derper-blue)](https://github.com/wx2020/derper-docker/pkgs/container/derper)
+[![platform](https://img.shields.io/badge/platform-amd64%20%7C%20arm64-brightgreen)](https://github.com/wx2020/derper-docker/pkgs/container/derper)
 
 # Setup
 
 > required: set env `DERP_DOMAIN` to your domain
 
 ```bash
-docker run -e DERP_DOMAIN=derper.your-domain.com -p 80:80 -p 443:443 -p 3478:3478/udp YOUR_NAME/derper
+docker run -e DERP_DOMAIN=derper.your-domain.com -p 80:80 -p 443:443 -p 3478:3478/udp ghcr.io/wx2020/derper
 ```
 
 | env                    | required | description                                                                 | default value     |
@@ -26,7 +26,7 @@ docker run -e DERP_DOMAIN=derper.your-domain.com -p 80:80 -p 443:443 -p 3478:347
 
 # Usage
 
-Fully DERP setup offical documentation: https://tailscale.com/kb/1118/custom-derp-servers/
+Fully DERP setup official documentation: https://tailscale.com/kb/1118/custom-derp-servers/
 
 ## Client verification
 

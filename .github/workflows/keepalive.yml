@@ -1,0 +1,21 @@
+name: Keep scheduled workflow activity
+
+permissions:
+  actions: write
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # 00:00 UTC every day
+  workflow_dispatch:
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Keep scheduled workflow activity
+        uses: WaterLemons2k/scheduled-workflow-activity-action@v2
+        # 默认用 GITHUB_TOKEN 即可；如果以后提示权限不足，
+        # 建一个含 actions:write 的 PAT 存为 secrets.KEEPALIVE_PAT，
+        # 再把下面这行取消注释：
+        # with:
+        #   token: ${{ secrets.KEEPALIVE_PAT }}

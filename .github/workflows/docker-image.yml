@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   packages: write
 
 jobs:
@@ -31,12 +31,6 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Log in to DockerHub Registry
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Check if the image exists
         run: |
@@ -65,9 +59,29 @@ jobs:
           platforms: linux/amd64, linux/arm64
           push: true
           tags: |
-            ${{ github.repository_owner }}/derper:${{ env.TAILSCALE_VERSION }}
-            ${{ github.repository_owner }}/derper:latest
             ghcr.io/${{ github.repository_owner }}/derper:${{ env.TAILSCALE_VERSION }}
             ghcr.io/${{ github.repository_owner }}/derper:latest
           build-args: |
             DERP_VERSION=${{ env.TAILSCALE_VERSION }}
+
+      - name: Set up Go
+        if: ${{ env.IMAGE_EXISTS == 'false' || github.event_name != 'schedule' }}
+        uses: actions/setup-go@v5
+        with:
+          go-version: stable
+
+      - name: Build derper binary (linux/amd64)
+        if: ${{ env.IMAGE_EXISTS == 'false' || github.event_name != 'schedule' }}
+        run: |
+          mkdir -p bin
+          GOOS=linux GOARCH=amd64 GOBIN="$PWD/bin" go install "tailscale.com/cmd/derper@${{ env.TAILSCALE_VERSION }}"
+          gzip -9 -c "bin/derper" > "derper-${{ env.TAILSCALE_VERSION }}-linux-amd64.gz"
+          ls -lh "derper-${{ env.TAILSCALE_VERSION }}-linux-amd64.gz"
+
+      - name: Publish binary to Release
+        if: ${{ env.IMAGE_EXISTS == 'false' || github.event_name != 'schedule' }}
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAILSCALE_VERSION }}
+          name: derper ${{ env.TAILSCALE_VERSION }} (linux/amd64)
+          files: derper-${{ env.TAILSCALE_VERSION }}-linux-amd64.gz
