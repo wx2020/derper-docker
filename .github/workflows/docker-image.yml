@@ -82,4 +82,5 @@ jobs:
         with:
           tag_name: ${{ env.TAILSCALE_VERSION }}
           name: ${{ env.TAILSCALE_VERSION }}
+          body: ""
           files: derper-${{ env.TAILSCALE_VERSION }}-linux-amd64.gz
