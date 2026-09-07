@@ -1,8 +1,6 @@
 name: Docker Image
 
 on:
-  push:
-    branches: [main]
   schedule:
     # Runs "every Monday" (see https://crontab.guru)
     - cron: '0 0 * * MON'
@@ -83,5 +81,5 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ env.TAILSCALE_VERSION }}
-          name: derper ${{ env.TAILSCALE_VERSION }} (linux/amd64)
+          name: ${{ env.TAILSCALE_VERSION }}
           files: derper-${{ env.TAILSCALE_VERSION }}-linux-amd64.gz
